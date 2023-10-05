@@ -1,0 +1,118 @@
+﻿@model ItemViewModel
+
+@{
+    ViewData["Title"] = "Details";
+
+    var random = new Random();
+    List<ItemViewModel> randomItems = (ViewBag.RelatedItems as List<ItemViewModel>)
+        ?.OrderBy(x => random.Next())
+        .Take(4)
+        .ToList();
+}
+
+<div class="container mt-10">
+    <div class="row">
+        <div class="col-md-6">
+            <img src=@Model.ImageUrl class="img-fluid margin-auto d-block w-100" />
+        </div>
+        <div class="col-md-6">
+            <h1 class="fs-1 mb-2 mt-1 text-white fw-med">@Model.Name</h1>
+            <h1 class="fs-4 mb-10 text-orange2">$@Model.Price</h1>
+
+            <form asp-action="AddToCart">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <div class="input-group">
+                        <button type="button" class="btn bg-orange btn-default btn-number quantity-button lh-lg fs-5 fw-bold text-white" data-type="minus" data-field="quantity">
+                            <span class="glyphicon glyphicon-minus">-</span>
+                        </button>
+                        <input type="number" id="quantity" name="quantity" asp-for="Quantity" value="1" min="1" class="form-control" />
+                        <button type="button" class="btn bg-orange btn-default btn-number quantity-button lh-lg fs-5 fw-bold text-white" data-type="plus" data-field="quantity">
+                            <span class="glyphicon glyphicon-plus">+</span>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block bg-orange btn-primary w-100 mt-4 rounded-pill lh-lg fs-5 fw-bold">Add to Cart</button>
+            </form>
+
+            
+            <br />
+
+            @if (Model.IsFavorited == true)
+            {
+                <a asp-action="FavoriteItem" asp-route-id="@Model.Id" class="btn bg-orange btn-block btn-primary w-100 rounded-pill lh-lg fs-5 fw-bold">
+                    Favorite &nbsp;<span class="fa-solid fa-heart"></span>
+                </a>
+
+            }
+            else
+            {
+                <a asp-action="FavoriteItem" asp-route-id="@Model.Id" class="btn bg-orange btn-block btn-primary w-100 rounded-pill lh-lg fs-5 fw-bold">
+                    Favorite &nbsp;<span class="fa-regular fa-heart"></span>
+                </a>
+
+            }
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <h2 class="text-white fw-bold">Product Details</h2>
+            <h1 class="fs-5 text-white">@Model.Description</h1>
+
+            <h2 class="mt-5 text-white mb-3 fw-bold">Related Products</h2>
+            @if(ViewBag.RelatedItems == null)
+            {
+                <h1>There are no related items</h1>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in randomItems)
+                    {
+                        <div class="col-md-3 rounded-3">
+                            <div class="card text-decoration-none link mb-3 border-style-none bg-offwhite shadow">
+                                <a asp-route-id="@item.Id" asp-action="Details" class="text-decoration-none link">
+                                    <img class="card-img-top" src="@item.ImageUrl" alt="Product Image">
+                                    <div class="card-body card-body-equal">
+                                        <h5 class="card-title fw-bold fs-3 text-yellow">@item.Name</h5>
+                                        <p class="card-text fw-bolder fs-4 text-orange2">$@item.Price</p>
+                                    </div>
+                                    <a asp-action="AddToCartQuick" asp-route-id="@item.Id" asp-route-returnUrl="@Context.Request.Path" class="text-white text-decoration-none fw-bolder">
+                                        <div class="card-footer bg-orange text-center">
+                                            Add to Cart
+                                        </div>
+                                    </a>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.btn-number').click(function (e) {
+                e.preventDefault();
+
+                var fieldName = $(this).attr('data-field');
+                var type = $(this).attr('data-type');
+                var input = $("input[name='" + fieldName + "']");
+                var currentVal = parseInt(input.val());
+
+                if (!isNaN(currentVal)) {
+                    if (type === 'minus') {
+                        if (currentVal > input.attr('min')) {
+                            input.val(currentVal - 1).change();
+                        }
+                    } else if (type === 'plus') {
+                        input.val(currentVal + 1).change();
+                    }
+                }
+            });
+        });
+    </script>
+}

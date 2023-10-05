@@ -1,0 +1,74 @@
+﻿@model CartViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (Model != null)
+{
+    <div class="container mt-5">
+            @if (Model != null && Model.CartItems.Count > 0)
+            {
+                <h1 class="text-center text-white p-5 fw-bold">Your Cart</h1>
+                <div class="row">
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="col-md-4 rounded-3">
+                        <div class="card text-decoration-none link mb-3 border-style-none bg-offwhite shadow">
+                                <a asp-route-id="@item.Item.Id" asp-action="Details" asp-controller="Items" class="text-decoration-none link">
+                                    <img class="card-img-top" src="@item.Item.ImageUrl" alt="Product Image">
+                                <div class="card-body card-body-equal">
+                                        <h5 class="card-title fw-bold fs-3 text-yellow">@item.Item.Name</h5>
+                                        <p class="card-text fw-bolder fs-4 text-orange2">$@item.Item.Price</p>
+                                    </div>
+
+                                    <div class="form-group bg-orange bd-bottom-white">
+                                        <div class="input-group justify-content-center">
+                                            <!-- Center the content within the input-group -->
+                                            <div class="col-xs-4 d-flex justify-content-center align-items-center">
+                                                <!-- Adjust the column width as needed -->
+                                                <a class="btn bg-orange btn-default btn-number fs-4 fw-bold text-white" asp-action="AdjustQuantity" asp-route-op="0" asp-route-id="@item.Id">
+                                                    <span class="">-</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-xs-4 d-flex justify-content-center align-items-center px-4">
+                                                <!-- Adjust the column width as needed -->
+                                                <h1 class="text-white bg-orange text-center fs-4 mt-2">@item.Quantity</h1>
+                                            </div>
+                                            <div class="col-xs-4 d-flex justify-content-center align-items-center">
+                                                <!-- Adjust the column width as needed -->
+                                                <a class="btn bg-orange btn-default btn-number fs-4 fw-bold text-white" asp-action="AdjustQuantity" asp-route-op="1" asp-route-id="@item.Id">
+                                                    <span class="">+</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a asp-action="DeleteItem" asp-route-id="@item.Id" class="text-white text-decoration-none fw-bold">
+                                    <div class="card-footer bg-orange3 text-center fs-4">
+                                        Remove
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                <div class="col-md-12 text-center mt-2">
+                    <!-- Add this wrapper div -->
+                    <a class="btn bg-orange text-white w-100 fs-4 fw-bold" asp-route-id="@Model.Id" asp-controller="Orders" asp-action="ViewOrder">Checkout</a>
+                </div>
+                </div>
+
+
+            }
+            else
+            {
+                <h1>Cart Is Empty</h1>
+            }
+
+    </div>
+
+}
+else
+{
+    <h1>You must be signed in to view your cart</h1>
+}

@@ -1,0 +1,31 @@
+﻿@model OrderViewModel
+
+@{
+    ViewData["Title"] = "Reciept";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.Cart.CartItems)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <a asp-route-id="@item.Id" asp-action="Details">
+                        <img class="card-img-top" src="@item.Item.ImageUrl" alt="Product Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Item.Name</h5>
+                            <p class="card-text">@item.Item.Description</p>
+                            <p class="card-text">$@item.Item.Price</p>
+                            <p class="card-text">Quantity: @item.Quantity</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        }
+        <h1>SubTotal: $@Model.CartPrice</h1>
+        <h1>Shipping & Handling: Free</h1>
+        <h1>Total: $@Model.TotalPrice</h1>
+    </div>
+</div>

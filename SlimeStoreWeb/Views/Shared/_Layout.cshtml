@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SlimeStoreWeb.Data;
+@inject SignInManager<Customer> SignInManager
+@inject UserManager<Customer> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ECommerceStoreWeb</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ECommerceStoreWeb.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.css" asp-append-version="true" />
+</head>
+
+<body class="bg-green">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-green-2 fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold text-white comic" asp-area="" asp-controller="Home" asp-action="Index">SLIME EMPORIUM</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav mx-auto">
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold text-white comic" asp-area="" asp-controller="Items" asp-action="ItemsView">SHOP ALL</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold text-white comic" asp-area="" asp-controller="Items" asp-action="ItemsFavoriteView">FAVORITES</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link fw-bold text-white comic" asp-area="" asp-controller="Carts" asp-action="Index">CART</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-bold text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                ADMIN
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Items" asp-action="Index">ITEMS</a></li>
+                                <li><a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">CATEGORIES</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3 mt-3 comic">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-center mt-5 bg-green3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="/assets/slime-logo.jpg" alt="Logo" class="footer-logo rounded">
+                </div>
+                <div class="col-md-4">
+                    <div class="footer-links">
+                        <a href="#" class="fw-bold comic">FAQ</a>
+                        <a href="#" class="fw-bold comic">CONTACT US</a>
+                        <a href="#" class="fw-bold comic">PRIVACY POLICY</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="social-icons">
+                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

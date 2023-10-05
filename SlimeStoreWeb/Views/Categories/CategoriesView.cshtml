@@ -1,0 +1,12 @@
+﻿@model List<CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Categories</h1>
+
+@foreach (var item in Model)
+{
+    <h1>@item.Name</h1>
+}
